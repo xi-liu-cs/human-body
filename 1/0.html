@@ -1,0 +1,24 @@
+<body bgcolor = #e6d0bd onload = 'main()'>
+    <select id = 'room_choice'>
+       <option value = "main">main
+    </select>
+    <dev id = buttons></dev>
+    <div id = canvas_div style = 'z-index: -1; position: absolute; left: 8; top: 36;'>
+        <canvas id = canvas width = 740 height = 740></canvas>
+    </div>
+    <div style = 'z-index: 2; position: absolute; left: 785; top: 36;'>
+        <font face = 'helvetica' size = 6 color = black>
+            <b>scene</b>
+            <p>hierarchic 3d scene<br>
+            with triangle meshes</p>
+            <input type = range id = arm_len value = 28> arm length<br>
+            <input type = range id = leg_len value = 40> leg length<br>
+            <input type = range id = move_rate> rate
+        </font>
+     </div>
+    <script src = 'js/lib/lib.js'></script>
+    <script src = 'js/lib/mat.js'></script>
+    <script src = 'js/matrix.js'></script>
+    <script src = 'js/mesh.js'></script>
+    <script src = 'js/main.js'></script>
+<body>
