@@ -100,7 +100,7 @@ vec3 shade(vec3 eye, mat4 material)
     {
         vec3 reflect = 2. * dot(vNor, u_light_direct[i]) * vNor - u_light_direct[i];
         c += u_light_color[i] * (diffuse * max(0., dot(vNor, u_light_direct[i]))
-        + specular * pow(max(0., dot(reflect, eye)), power)) + .5 * pattern(vNor);
+        + specular * pow(max(0., dot(reflect, eye)), power)); /* + specular * pow(max(0., dot(reflect, eye)), power)) + .5 * pattern(vNor); */
     }
     return c;
 }

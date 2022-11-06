@@ -1,3 +1,13 @@
+S.draw_mesh3 =
+function(mesh, matrix)
+{
+    let gl = S.gl;
+    S.setUniform('Matrix4fv', 'uMatrix', false, matrix);
+    S.setUniform('Matrix4fv', 'uInvMatrix', false, matrixInverse(matrix));
+    S.gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(mesh), gl.STATIC_DRAW);
+    S.gl.drawArrays(S.gl.TRIANGLES, 0, mesh.length / S.VERTEX_SIZE);
+}
+
 function glue_mesh(a, b)
 {
     let mesh = a.slice();
@@ -151,4 +161,153 @@ function transform_mesh(mesh, matrix)
         result = result.concat([p[0], p[1], p[2], n[0], n[1], n[2], uv[0], uv[1], 0, 0, 0, 0, 0, 0, 0, 0]);
     }
     return result;
+}
+
+function cross(x, y)
+{
+    return [x[1] * y[2] - y[1] * x[2],
+    x[2] * y[0] - y[2] * x[0],
+    x[0] - y[1] * y[0] * x[1]];
+}
+
+function sub(p1, p2)
+{
+    return [p1[0] - p2[0], p1[1] - p2[1], p1[2] - p2[2]];
+}
+
+function triangle_normal(p1, p2, p3)
+{
+    return cross(sub(p2, p1), sub(p3, p1));
+}
+
+function tetrahedron(u, v)
+{
+    let a = 1.0 / 3.0,
+    b = Math.sqrt(8.0 / 9.0),
+    c = Math.sqrt(2.0 / 9.0),
+    d = Math.sqrt(2.0 / 3.0),
+    v0 = [0, 0, 1],
+    v1 = [-c, d, -a],
+    v2 = [-c, -d, -a],
+    v3 = [b, 0, -a],
+    n0 = triangle_normal(v0, v1, v2),
+    n1 = triangle_normal(v2, v3, v0),
+    n2 = triangle_normal(v0, v3, v1),
+    n3 = triangle_normal(v1, v2, v3),
+    mesh = 
+    [v0[0],v0[1],v0[2], n0[0],n0[1],n0[2], u,v, 0,0,0,0,0,0,0,0,
+    v1[0],v1[1],v1[2], n0[0],n0[1],n0[2], u,v, 0,0,0,0,0,0,0,0,
+    v2[0],v2[1],v2[2], n0[0],n0[1],n0[2], u,v, 0,0,0,0,0,0,0,0,
+
+    v0[0],v0[1],v0[2], n1[0],n1[1],n1[2], u,v, 0,0,0,0,0,0,0,0,
+    v2[0],v2[1],v2[2], n1[0],n1[1],n1[2], u,v, 0,0,0,0,0,0,0,0,
+    v3[0],v3[1],v3[2], n1[0],n1[1],n1[2], u,v, 0,0,0,0,0,0,0,0,
+
+    v0[0],v0[1],v0[2], n2[0],n2[1],n2[2], u,v, 0,0,0,0,0,0,0,0,
+    v3[0],v3[1],v3[2], n2[0],n2[1],n2[2], u,v, 0,0,0,0,0,0,0,0,
+    v1[0],v1[1],v1[2], n2[0],n2[1],n2[2], u,v, 0,0,0,0,0,0,0,0,
+
+    v3[0],v3[1],v3[2], n3[0],n3[1],n3[2], u,v, 0,0,0,0,0,0,0,0,
+    v2[0],v2[1],v2[2], n3[0],n3[1],n3[2], u,v, 0,0,0,0,0,0,0,0,
+    v1[0],v1[1],v1[2], n3[0],n3[1],n3[2], u,v, 0,0,0,0,0,0,0,0];
+    return mesh;
+}
+
+function star(u, v)
+{
+    let m = new matrix();
+    m.identity();
+    m.save();
+        m.scale(.5, .4, .4);
+        m.translate(-.4, -.4, 0);
+        S.draw_mesh3(tetrahedron(u, v), m.get());
+        m.rotx(-Math.PI / 2);
+        m.roty(-Math.PI / 2);
+        S.draw_mesh3(tetrahedron(u, v), m.get());
+    m.restore();
+}
+
+function hexahedron(u, v)
+{
+    let a = 1.0 / 3.0,
+    b = Math.sqrt(8.0 / 9.0),
+    c = Math.sqrt(2.0 / 9.0),
+    d = Math.sqrt(2.0 / 3.0),
+    v0 = [0, 0, 1],
+    v1 = [-c, d, -a],
+    v2 = [-c, -d, -a],
+    v3 = [b, 0, -a],
+    v4 = [b, 0, -1],
+    n0 = triangle_normal(v0, v1, v2),
+    n1 = triangle_normal(v2, v3, v0),
+    n2 = triangle_normal(v0, v3, v1),
+    n3 = triangle_normal(v1, v2, v3),
+    n4 = triangle_normal(v1, v2, v4),
+    n5 = triangle_normal(v1, v3, v4),
+    n6 = triangle_normal(v2, v3, v4),
+    mesh = 
+    [v0[0],v0[1],v0[2], n0[0],n0[1],n0[2], u,v, 0,0,0,0,0,0,0,0,
+    v1[0],v1[1],v1[2], n0[0],n0[1],n0[2], u,v, 0,0,0,0,0,0,0,0,
+    v2[0],v2[1],v2[2], n0[0],n0[1],n0[2], u,v, 0,0,0,0,0,0,0,0,
+
+    v0[0],v0[1],v0[2], n1[0],n1[1],n1[2], u,v, 0,0,0,0,0,0,0,0,
+    v2[0],v2[1],v2[2], n1[0],n1[1],n1[2], u,v, 0,0,0,0,0,0,0,0,
+    v3[0],v3[1],v3[2], n1[0],n1[1],n1[2], u,v, 0,0,0,0,0,0,0,0,
+
+    v0[0],v0[1],v0[2], n2[0],n2[1],n2[2], u,v, 0,0,0,0,0,0,0,0,
+    v3[0],v3[1],v3[2], n2[0],n2[1],n2[2], u,v, 0,0,0,0,0,0,0,0,
+    v1[0],v1[1],v1[2], n2[0],n2[1],n2[2], u,v, 0,0,0,0,0,0,0,0,
+
+    v3[0],v3[1],v3[2], n3[0],n3[1],n3[2], u,v, 0,0,0,0,0,0,0,0,
+    v2[0],v2[1],v2[2], n3[0],n3[1],n3[2], u,v, 0,0,0,0,0,0,0,0,
+    v1[0],v1[1],v1[2], n3[0],n3[1],n3[2], u,v, 0,0,0,0,0,0,0,0,
+
+    v1[0],v1[1],v1[2], n4[0],n4[1],n4[2], u,v, 0,0,0,0,0,0,0,0,
+    v2[0],v2[1],v2[2], n4[0],n4[1],n4[2], u,v, 0,0,0,0,0,0,0,0,
+    v4[0],v4[1],v4[2], n4[0],n4[1],n4[2], u,v, 0,0,0,0,0,0,0,0,
+
+    v1[0],v1[1],v1[2], n5[0],n5[1],n5[2], u,v, 0,0,0,0,0,0,0,0,
+    v3[0],v3[1],v3[2], n5[0],n5[1],n5[2], u,v, 0,0,0,0,0,0,0,0,
+    v4[0],v4[1],v4[2], n5[0],n5[1],n5[2], u,v, 0,0,0,0,0,0,0,0,
+
+    v2[0],v2[1],v2[2], n6[0],n6[1],n6[2], u,v, 0,0,0,0,0,0,0,0,
+    v3[0],v3[1],v3[2], n6[0],n6[1],n6[2], u,v, 0,0,0,0,0,0,0,0,
+    v4[0],v4[1],v4[2], n6[0],n6[1],n6[2], u,v, 0,0,0,0,0,0,0,0];
+    return mesh;
+}
+
+function face_mesh(v1, v2, v3, u, v)
+{/* gl_TRIANGLES */
+    let n = triangle_normal(v1, v2, v3);
+    return [v1[0],v1[1],v1[2], n[0],n[1],n[2], u,v, 0,0,0,0,0,0,0,0,
+    v2[0],v2[1],v2[2], n[0],n[1],n[2], u,v, 0,0,0,0,0,0,0,0,
+    v3[0],v3[1],v3[2], n[0],n[1],n[2], u,v, 0,0,0,0,0,0,0,0];
+}
+
+function combine_mesh_array(array)
+{
+    let a = [];
+    for(let i = 0; i < array.length; ++i)
+       a = a.concat(array[i]);
+    return a;
+}
+
+function octahedron(u, v)
+{
+    let n = 1,
+    a = [n, 0, 0],
+    b = [-n, 0, 0],
+    c = [0, n, 0],
+    d = [0, -n, 0],
+    e = [0, 0, n],
+    f = [0, 0, -n],
+    mesh_array = [face_mesh(a, f, c, u, v),
+    face_mesh(b, f, c, u, v),
+    face_mesh(b, f, d, u, v),
+    face_mesh(a, f, d, u, v),
+    face_mesh(a, e, c, u, v),
+    face_mesh(b, e, c, u, v),
+    face_mesh(b, e, d, u, v),
+    face_mesh(a, e, d, u, v)];
+    return combine_mesh_array(mesh_array);
 }
