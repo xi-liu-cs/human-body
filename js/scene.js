@@ -165,10 +165,50 @@ m.save();
                     S.draw_mesh2(S.half_sphere_mesh2, m.get(), S.material[0]);
                 m.restore();
             m.restore();
+            m.save(); /* ear */
+                m.translate(-1, -.06, 0);
+                m.scale(.07, .19, .2);
+                m.save();
+                    m.translate(0, .22, 0);
+                    m.scale(1, .7, 1);
+                    S.draw_mesh2(S.sphere_mesh, m.get(), S.material[0]);
+                m.restore();
+                m.save();
+                    m.rotx(Math.PI);
+                    S.draw_mesh2(S.half_sphere_mesh, m.get(), S.material[0]);
+                m.restore();
+                m.translate(0, -.5, 0);
+                m.scale(1, .5, .5);
+                S.draw_mesh2(S.sphere_mesh, m.get(), S.material[0]);
+            m.restore();
+            m.save(); /* ear */
+                m.translate(1, -.06, 0);
+                m.scale(.07, .19, .2);
+                m.save();
+                    m.translate(0, .22, 0);
+                    m.scale(1, .7, 1);
+                    S.draw_mesh2(S.sphere_mesh, m.get(), S.material[0]);
+                m.restore();
+                m.save();
+                    m.rotx(Math.PI);
+                    S.draw_mesh2(S.half_sphere_mesh, m.get(), S.material[0]);
+                m.restore();
+                m.translate(0, -.5, 0);
+                m.scale(1, .5, .5);
+                S.draw_mesh2(S.sphere_mesh, m.get(), S.material[0]);
+            m.restore();
             S.draw_mesh2(S.sphere_mesh, m.get(), S.material[1]);
             m.save(); /* eye */
                 m.translate(-.5, .26, .8);
                 m.scale(.17, .06, .1);
+                m.save(); /* eyebrow */
+                    m.translate(.2, 2, -.5);
+                    m.scale(1.6, .5, 1.4);
+                    S.draw_mesh4(octahedron(20, 10), m.get(), S.material[7]);
+                    m.translate(.2, 0, 0);
+                    m.roty(Math.PI / 3)
+                    S.draw_mesh4(octahedron(20, 10), m.get(), S.material[7]);
+                m.restore();
                 m.save();
                     m.scale(.5, 1, 1);
                     m.translate(-.3, 0, 0);
@@ -180,6 +220,14 @@ m.save();
             m.save(); /* eye */
                 m.translate(.5, .26, .8);
                 m.scale(.17, .06, .1);
+                m.save(); /* eyebrow */
+                    m.translate(-.2, 2, -.5);
+                    m.scale(1.6, .5, 1.4);
+                    S.draw_mesh4(octahedron(20, 10), m.get(), S.material[7]);
+                    m.translate(.2, 0, 0);
+                    m.roty(Math.PI / 3);
+                    S.draw_mesh4(octahedron(20, 10), m.get(), S.material[7]);
+                m.restore();
                 m.save();
                     m.scale(.5, 1, 1);
                     m.translate(.3, 0, 0);
@@ -397,13 +445,6 @@ m2.save();
     m2.translate(0, -1, -100);
     S.draw_mesh2(S.square_mesh0, m2.get(), S.material[9]);
 m2.restore();
-// m2.save();
-//     m2.scale(.1, .1, .1);
-//     m2.translate(-7, 5.5, 0);
-//     m2.rotx(Math.PI / 2);
-//     m2.roty(t);
-//     S.draw_mesh2(S.half_sphere_mesh2, m2.get(), S.material[0]);
-// m2.restore();
 `,
 events: `
     ;
