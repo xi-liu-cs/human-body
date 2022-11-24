@@ -1,11 +1,8 @@
 # human body with triangle meshes
 Xi Liu</br>
-2022</br>
-meshes are used to generate torus, sphere, cube, and polygons of intersected planes. meshes are represented by triangle strips. mesh editing algorithms such as glue_mesh concatenates the last vertex of array a with first vertex of array b, uv_mesh iteratively calls the shape_mesh_function that generates the vertex data (position, surface normal, and uv coordinates) for each u and v</br>
-ray trace to second order surfaces such as cylinder, hyperboloid, and sphere</br>
-ray trace to halfspace surfaces, using different random number generators to generate polygon arrays that contain homogeneous form of halfspace descriptions of polygons</br>
-noise is applied in various shapes using Perlin's noise algorithm</br>
-after entering the website, click the interact button at top
+This project is done for computer graphics course at New York University, fall 2022.</br>
+The skeleton of the human body is constructed using a stack of matrices, a stack is used to model the tree structure transformations of each component of the human body with respect to its other components.</br>
+You can interact with the simulation by changing the number of fingers, toes, and length of limbs, etc.</br>
 ![0](image/0.png)
 ![1](image/1.png)
 ![2](image/2.png)
