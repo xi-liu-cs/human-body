@@ -6,7 +6,7 @@ The skeleton of the human body is constructed using a stack of matrices, a stack
 </br>
 The human face is created with mesh geometry including octahedron, spheres, and half spheres using gl.TRIANGLES. Other geometry are also involved in the scene such as dodecahedron, icosahedron, torus, star using both gl.TRIANGLES and gl.TRIANGLE_STRIP.</br>
 </br>
-You can interact with the simulation by changing the number of fingers, toes, and length of limbs, etc.</br>
+You can interact with the simulation by changing the number of fingers, toes, length of limbs, and rate of movement, etc.</br>
 </br>
 ![0](image/0.png)
 ![1](image/1.png)
