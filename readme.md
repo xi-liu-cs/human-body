@@ -13,5 +13,5 @@ You can interact with the simulation by changing the number of fingers, toes, le
 ![2](image/2.png)
 ![3](image/3.png)
 ![4](image/4.png)
-![4](image/5.png)
-![4](image/6.png)
+![5](image/5.png)
+![6](image/6.png)
