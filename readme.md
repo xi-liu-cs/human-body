@@ -1,4 +1,4 @@
-# human body with triangle meshes
+# human body with polyhedral meshes
 Xi Liu</br>
 This project is done for computer graphics course at New York University, fall 2022, using WebGL.</br>
 </br>
